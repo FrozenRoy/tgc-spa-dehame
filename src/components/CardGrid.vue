@@ -10,6 +10,7 @@
       v-for="card in cards"
       :key="card.id"
       :card="card"
+      :current-hp="card.hp"
       :size="size"
       :selected="selectable && selectedIds.includes(card.id)"
       :disabled="selectable && isDisabled(card.id)"
