@@ -24,15 +24,22 @@
             Chargement des cartes...
           </div>
 
-          <CardGrid
-            v-else
-            :cards="allCards"
-            size="sm"
-            :selectable="true"
-            :max-selected="10"
-            :selected-ids="selectedCardIds"
-            @update:selected-ids="selectedCardIds = $event"
-          />
+          <div v-else style="width: 100%">
+            <NInput
+              v-model:value="search"
+              placeholder="Rechercher une carte par nom..."
+              clearable
+              style="margin-bottom: 12px"
+            />
+            <CardGrid
+              :cards="filteredCards"
+              size="sm"
+              :selectable="true"
+              :max-selected="10"
+              :selected-ids="selectedCardIds"
+              @update:selected-ids="selectedCardIds = $event"
+            />
+          </div>
         </NFormItem>
       </NForm>
 
@@ -71,10 +78,20 @@ const isEdit = computed(() => !!route.params.id)
 const deckId = computed(() => route.params.id as string)
 
 const name = ref('')
+const search = ref('')
 const selectedCardIds = ref<number[]>([])
 const allCards = ref<Card[]>([])
 const loadingCards = ref(false)
 const submitting = ref(false)
+
+const filteredCards = computed(() => {
+  const q = search.value.trim().toLowerCase()
+  if (!q) return allCards.value
+  return allCards.value.filter(
+    (c) =>
+      c.name.toLowerCase().includes(q) || selectedCardIds.value.includes(c.id),
+  )
+})
 
 const isValid = computed(
   () => name.value.trim().length > 0 && selectedCardIds.value.length === 10,

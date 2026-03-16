@@ -33,6 +33,7 @@
             <PokemonCard
               v-if="cardMap[deckCard.cardId]"
               :card="cardMap[deckCard.cardId]"
+              :current-hp="cardMap[deckCard.cardId].hp"
               size="sm"
             />
           </template>
