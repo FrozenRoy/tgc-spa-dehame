@@ -96,7 +96,7 @@ const props = withDefaults(
     size?: 'sm' | 'md'
     selected?: boolean
     disabled?: boolean
-    currentHp?: number
+    currentHp: number
   }>(),
   { size: 'md', selected: false, disabled: false },
 )
