@@ -17,6 +17,29 @@ const SOCKET_URL = parsedUrl.origin
 const subPath = parsedUrl.pathname.replace(/\/api$/, '').replace(/\/$/, '')
 const SOCKET_PATH = subPath ? `${subPath}/socket.io` : '/socket.io'
 
+interface SocketGamePayload {
+  gameState?: GameState
+  message?: string
+  roomId?: number
+}
+
+const isSocketGamePayload = (
+  payload: unknown,
+): payload is SocketGamePayload => {
+  if (typeof payload !== 'object' || payload === null) return false
+
+  const candidate = payload as Record<string, unknown>
+  const hasValidMessage =
+    candidate.message === undefined || typeof candidate.message === 'string'
+  const hasValidRoomId =
+    candidate.roomId === undefined || typeof candidate.roomId === 'number'
+  const hasValidGameState =
+    candidate.gameState === undefined ||
+    (typeof candidate.gameState === 'object' && candidate.gameState !== null)
+
+  return hasValidMessage && hasValidRoomId && hasValidGameState
+}
+
 export const useGameStore = defineStore('game', () => {
   const storage = useStorage()
 
@@ -83,21 +106,26 @@ export const useGameStore = defineStore('game', () => {
     })
 
     socket.on('gameStarted', (payload: unknown) => {
+      if (!isSocketGamePayload(payload)) return
+
       if (payload.gameState) {
         gameState.value = JSON.parse(JSON.stringify(payload.gameState))
-        message.value = payload.message || ''
+        message.value = payload.message ?? ''
         currentRoomId.value = payload.gameState.roomId
+        router.push('/game')
       } else if (payload.roomId !== undefined) {
         gameState.value = JSON.parse(JSON.stringify(payload))
         currentRoomId.value = payload.roomId
+        router.push('/game')
       }
-      router.push('/game')
     })
 
     socket.on('gameStateUpdated', (payload: unknown) => {
+      if (!isSocketGamePayload(payload)) return
+
       if (payload.gameState) {
         gameState.value = JSON.parse(JSON.stringify(payload.gameState))
-        if (payload.message) message.value = payload.message
+        if (payload.message !== undefined) message.value = payload.message
       } else if (payload.roomId !== undefined) {
         gameState.value = JSON.parse(JSON.stringify(payload))
       }
