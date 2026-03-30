@@ -4,7 +4,7 @@
     :show="show"
     :mask-closable="false"
     preset="card"
-    style="width: 380px; text-align: center"
+    style="width: min(92vw, 380px); text-align: center"
   >
     <template #header>
       <span style="font-size: 20px">

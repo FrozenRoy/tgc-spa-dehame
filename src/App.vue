@@ -19,7 +19,20 @@ const authStore = useAuthStore()
 </script>
 
 <style>
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+}
+
 body {
-  padding: 0 20px;
+  margin: 0;
+  padding: 0;
 }
 </style>
