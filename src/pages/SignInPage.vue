@@ -1,6 +1,6 @@
 <template>
   <div class="sign-in-page">
-    <NCard title="Connexion" style="max-width: 400px; margin: 80px auto">
+    <NCard title="Connexion" class="auth-card">
       <NForm ref="formRef" :model="formData" :rules="rules">
         <NFormItem label="Email" path="email">
           <NInput
@@ -95,9 +95,20 @@ const handleSignIn = async () => {
 
 <style scoped>
 .sign-in-page {
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 24px 12px;
+}
+
+.auth-card {
+  width: min(100%, 420px);
+}
+
+@media (min-width: 768px) {
+  .sign-in-page {
+    padding: 40px 16px;
+  }
 }
 </style>

@@ -1,17 +1,7 @@
 <template>
-  <div
-    style="
-      max-width: 700px;
-      margin: 0 auto;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      min-height: calc(100vh - 64px);
-    "
-  >
+  <div class="game-page">
     <!-- Chargement ou erreur -->
-    <div v-if="!gameStore.gameState" style="text-align: center; padding: 48px">
+    <div v-if="!gameStore.gameState" class="game-loading">
       <NSpin size="large" />
       <p style="color: #888; margin-top: 12px">En attente de la partie...</p>
       <p
@@ -25,17 +15,8 @@
     <!-- Jeu affiché -->
     <template v-else>
       <!-- Affichage de débogage en développement -->
-      <div
-        v-if="debugMode"
-        style="
-          background: #f0f0f0;
-          padding: 8px;
-          border-radius: 4px;
-          font-size: 11px;
-          color: #666;
-        "
-      >
-        <div style="margin-bottom: 6px">
+      <div v-if="debugMode" class="game-debug">
+        <div class="game-debug-line">
           Rôle: {{ gameStore.isHost ? 'host' : 'guest' }} | Tour:
           {{ gameStore.isMyTurn ? 'Mon tour' : 'Tour adversaire' }} | Score:
           {{ gameStore.myBoard?.score }}/3
@@ -138,3 +119,39 @@ function handleGoToLobby() {
   router.push(ROUTES.HOME)
 }
 </script>
+
+<style scoped>
+.game-page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: calc(100dvh - 64px);
+}
+
+.game-loading {
+  text-align: center;
+  padding: 40px 12px;
+}
+
+.game-debug {
+  background: #f0f0f0;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  color: #666;
+}
+
+.game-debug-line {
+  margin-bottom: 6px;
+}
+
+@media (min-width: 768px) {
+  .game-page {
+    padding: 16px;
+    gap: 14px;
+  }
+}
+</style>

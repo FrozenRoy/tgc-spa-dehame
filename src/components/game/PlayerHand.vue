@@ -1,14 +1,7 @@
 <template>
   <!-- RG1 main — cartes + deck count -->
-  <div style="margin-top: 12px">
-    <div
-      style="
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 8px;
-      "
-    >
+  <div class="player-hand">
+    <div class="player-hand-info">
       <span style="font-size: 12px; color: #666"
         >Main ({{ hand.length }}/5)</span
       >
@@ -17,22 +10,14 @@
       >
     </div>
 
-    <div
-      v-if="hand.length === 0"
-      style="color: #bbb; font-size: 12px; text-align: center; padding: 8px"
-    >
-      Main vide
-    </div>
+    <div v-if="hand.length === 0" class="player-hand-empty">Main vide</div>
 
-    <div
-      v-else
-      style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px"
-    >
+    <div v-else class="player-hand-list">
       <!-- RG2 main — jouer carte si tour du joueur et pas de carte active -->
       <div
         v-for="(card, index) in hand"
         :key="`${card.id}-${index}`"
-        style="flex-shrink: 0; width: 90px"
+        class="player-hand-card"
       >
         <PokemonCard
           :card="toCard(card)"
@@ -77,3 +62,48 @@ function toCard(gc: GameCard): Card {
   }
 }
 </script>
+
+<style scoped>
+.player-hand {
+  margin-top: 12px;
+}
+
+.player-hand-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+
+.player-hand-empty {
+  color: #bbb;
+  font-size: 12px;
+  text-align: center;
+  padding: 8px;
+}
+
+.player-hand-list {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.player-hand-card {
+  flex-shrink: 0;
+  width: 90px;
+}
+
+@media (max-width: 640px) {
+  .player-hand-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .player-hand-card {
+    width: 78px;
+  }
+}
+</style>

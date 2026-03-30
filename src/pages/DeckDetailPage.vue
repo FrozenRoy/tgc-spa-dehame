@@ -1,10 +1,10 @@
 <template>
-  <div style="padding: 24px">
+  <div class="deck-detail-page">
     <div v-if="loading" style="text-align: center; padding: 48px">
       <NSpin size="large" />
     </div>
 
-    <NCard v-else-if="deck" :title="deck.name">
+    <NCard v-else-if="deck" :title="deck.name" class="deck-detail-card">
       <template #header-extra>
         <NButton type="primary" @click="router.push(`/decks/${deck.id}/edit`)">
           Modifier
@@ -59,3 +59,20 @@ onMounted(async () => {
   }
 })
 </script>
+
+<style scoped>
+.deck-detail-page {
+  padding: 16px 12px 28px;
+}
+
+.deck-detail-card {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .deck-detail-page {
+    padding: 24px 20px 36px;
+  }
+}
+</style>

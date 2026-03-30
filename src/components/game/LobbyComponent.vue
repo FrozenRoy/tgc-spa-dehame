@@ -1,13 +1,6 @@
 <template>
-  <div style="max-width: 600px; margin: 0 auto">
-    <div
-      style="
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 20px;
-      "
-    >
+  <div class="lobby">
+    <div class="lobby-header">
       <h2 style="margin: 0">Lobby</h2>
       <NTag :type="isConnected ? 'success' : 'warning'" size="small" round>
         {{ isConnected ? 'Connecté' : 'Connexion...' }}
@@ -35,7 +28,7 @@
     </NAlert>
 
     <!-- Sélection du deck -->
-    <NCard title="Choisir un deck" style="margin-bottom: 20px">
+    <NCard title="Choisir un deck" class="lobby-deck-card">
       <div v-if="loadingDecks" style="text-align: center; padding: 16px">
         <NSpin size="medium" />
       </div>
@@ -71,20 +64,13 @@
         Aucune room disponible. Créez-en une !
       </div>
 
-      <div v-else style="display: flex; flex-direction: column; gap: 10px">
+      <div v-else class="lobby-room-list">
         <div
           v-for="room in gameStore.rooms"
           :key="room.id"
-          style="
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 16px;
-            border: 1px solid #e8e8e8;
-            border-radius: 8px;
-          "
+          class="lobby-room-row"
         >
-          <div>
+          <div class="lobby-room-info">
             <span style="font-weight: 600">{{ room.hostSocketId }}</span>
             <span style="color: #999; font-size: 12px; margin-left: 8px"
               >#{{ room.id }}</span
@@ -99,6 +85,7 @@
               !!gameStore.currentRoomId
             "
             :loading="joining === room.id"
+            class="lobby-room-btn"
             @click="handleJoinRoom(room.id)"
           >
             Rejoindre
@@ -178,3 +165,54 @@ onMounted(async () => {
   await fetchDecks()
 })
 </script>
+
+<style scoped>
+.lobby {
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.lobby-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.lobby-deck-card {
+  margin-bottom: 20px;
+}
+
+.lobby-room-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lobby-room-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+}
+
+.lobby-room-info {
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .lobby-room-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .lobby-room-btn {
+    width: 100%;
+  }
+}
+</style>
