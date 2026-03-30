@@ -33,7 +33,12 @@ const props = withDefaults(
     selectedIds?: number[]
     maxSelected?: number
   }>(),
-  { size: 'md', selectable: false, selectedIds: () => [] },
+  {
+    size: 'md',
+    selectable: false,
+    selectedIds: () => [],
+    maxSelected: undefined,
+  },
 )
 
 const emit = defineEmits<{ 'update:selectedIds': [ids: number[]] }>()

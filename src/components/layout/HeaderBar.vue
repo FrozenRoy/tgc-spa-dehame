@@ -38,12 +38,15 @@ import { useRouter } from 'vue-router'
 
 import { ROUTES } from '../../router'
 import { useAuthStore } from '../../store/auth'
+import { useGameStore } from '../../store/game'
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL as string
 const router = useRouter()
 const authStore = useAuthStore()
+const gameStore = useGameStore()
 
 const handleLogout = () => {
+  gameStore.disconnect()
   authStore.logout()
   router.push(ROUTES.SIGNIN)
 }
